@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+import Details from "./Details";
+import Spinner from "./spinner.gif";
 const Home = () => {
   const [searchItem, setSearchItem] = useState("salad");
   const [navHeight, setNavHeight] = useState("40vh");
@@ -14,6 +15,8 @@ const Home = () => {
     app_key;
   console.log(reference);
   const [recepie, setRecepie] = useState([]);
+  let arr = [];
+  const [sd, setSd] = useState([]);
   useEffect(() => {
     getRecepies();
     if (searchItem.length == 0) {
@@ -23,80 +26,133 @@ const Home = () => {
     }
   }, [searchItem]);
   const getRecepies = async () => {
+    document.getElementById("spinner").style.display = "block";
+    document.getElementById("fetchedData").style.display = "none";
     const res = await fetch(reference);
     const data = await res.json();
     console.log(data.hits);
     setRecepie(data.hits);
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("fetchedData").style.display = "block";
   };
   return (
     <>
-      <div
-        className="nav"
-        style={{ minHeight: navHeight, transition: "1s linear" }}
-      >
-        <div className="container">
-          <h1 className="text-light mt-5 fs-1" style={{ letterSpacing: "1px" }}>
-            <i class="fa-solid fa-utensils me-2"></i> Food
-          </h1>
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="What you want to have???"
-              className="form-control me-auto mt-2"
-              id="inp"
-              style={{ height: "min-content" }}
-            ></input>
-            <button
-              style={{ height: "min-content" }}
-              className="input-group-text mt-2 text-light bg-dark"
-              onClick={() => {
-                setSearchItem(document.getElementById("inp").value);
-                console.log(searchItem);
-              }}
+      <div id="mainTab">
+        <div
+          className="nav"
+          style={{ minHeight: navHeight, transition: "1s linear" }}
+        >
+          <div className="container">
+            <h1
+              className="text-light mt-5 fs-1"
+              style={{ letterSpacing: "1px" }}
             >
-              Search
-            </button>
+              <i class="fa-solid fa-utensils me-2"></i> Food
+            </h1>
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="What you want to have???"
+                className="form-control me-auto mt-2"
+                id="inp"
+                style={{ height: "min-content" }}
+              ></input>
+              <button
+                style={{ height: "min-content" }}
+                className="input-group-text mt-2 text-light bg-dark"
+                onClick={() => {
+                  setSearchItem(document.getElementById("inp").value);
+                }}
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="spinner">
+          spinner<img src={Spinner} className="w-25 h-25"></img>
+        </div>
+        <div id="fetchedData">
+          <div className="container-fluid mt-3 mb-5 d-flex align-items-center justify-content-center">
+            <hr className="w-25"></hr>
+            <span className="me-5 ms-5 fs-2">Top picks</span>
+            <hr className="w-25"></hr>
+          </div>
+          <div className="container-fluid">
+            <main class="page-content">
+              {recepie.map(function (element, index) {
+                return (
+                  <div
+                    class="card"
+                    style={{
+                      background: `url(${element.recipe.image})`,
+                      backgroundSize: "cover",
+                    }}
+                  >
+                    <div class="content">
+                      <h2 class="title">{element.recipe.label}</h2>
+                      <p class="copy">
+                        <div className="d-flex">
+                          <span className="text-main">Cuisine type:</span>
+                          {element.recipe.cuisineType[0]}
+                        </div>
+                        <div className="d-flex">
+                          <span className="text-main">Meal type:</span>
+                          {element.recipe.mealType[0]}
+                        </div>
+                        <div>
+                          {element.recipe.cautions.length != 0 ? (
+                            <span className="text-main">Caution contains:</span>
+                          ) : null}
+                          {element.recipe.cautions
+                            .slice(0, -1)
+                            .map(function (e, i) {
+                              return e + ", ";
+                            })}
+                          {
+                            element.recipe.cautions[
+                              element.recipe.cautions.length - 1
+                            ]
+                          }
+                        </div>
+                      </p>
+                      <button
+                        class="btn"
+                        to="/wow"
+                        onClick={() => {
+                          setSd(element.recipe);
+                          console.log(arr);
+                          document.getElementById("detailsTab").style.display =
+                            "block";
+                          document.getElementById("mainTab").style.display =
+                            "none";
+                        }}
+                      >
+                        View Recipe
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </main>
           </div>
         </div>
       </div>
-      <div className="container-fluid mt-3 mb-5 d-flex align-items-center justify-content-center">
-        <hr className="w-25"></hr>
-        <span className="me-5 ms-5 fs-2">Top picks</span>
-        <hr className="w-25"></hr>
-      </div>
-      <div className="container-fluid">
-        <main class="page-content">
-          {recepie.map(function (element, index) {
-            return (
-              <div
-                class="card"
-                style={{
-                  background: `url(${element.recipe.image})`,
-                  backgroundSize: "cover",
-                }}
-              >
-                <div class="content">
-                  <h2 class="title">{element.recipe.label}</h2>
-                  <p class="copy">
-                    Cuisine type: {element.recipe.cuisineType[0]}
-                    Meal type: {element.recipe.mealType[0]}
-                    {element.recipe.cautions.length != 0
-                      ? "Cautions: contains "
-                      : ""}
-                    {element.recipe.cautions.slice(0,-1).map(function (e, i) {
-                      return e + ", ";
-                    })}
-                    {element.recipe.cautions[element.recipe.cautions.length-1]}
-                  </p>
-                  <button class="btn">View Recipe</button>
-                </div>
-              </div>
-            );
-          })}
-        </main>
+      <div id="detailsTab">
+        <div>
+          <button
+            className="btn"
+            onClick={() => {
+              document.getElementById("detailsTab").style.display = "none";
+              document.getElementById("mainTab").style.display = "block";
+            }}
+          >
+            Back to home screen
+          </button>
+        </div>
+        <Details arr={sd} />
       </div>
     </>
   );
 };
-
 export default Home;

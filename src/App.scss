@@ -9,7 +9,7 @@ $bp-xlg: 1000px;
 $bp-xxlg: 1200px;
 .text-main {
   text-decoration: none;
-  color: #a020f0;
+  color: $main;
 }
 .nav {
   background-color: $main;
@@ -20,7 +20,21 @@ $bp-xxlg: 1200px;
 .nav h1 {
   font-family: "Anton", sans-serif;
 }
-
+#spinner{
+  position: absolute;
+  top: 0;
+  opacity: 0.5;
+  left: 0;
+  background-color: black;
+  height: 100vh;
+  width: 100vw;
+}
+#spinner img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
 :root {
   --d: 700ms;
   --e: cubic-bezier(0.19, 1, 0.22, 1);
@@ -97,7 +111,7 @@ $bp-xxlg: 1200px;
     pointer-events: none;
     background-image: linear-gradient(
       to bottom,
-      hsla(0, 0%, 0%, 0) 0%,
+      hsla(0, 0%, 0%, 0.26) 0%,
       hsla(0, 0%, 0%, 0.90) 100%
     );
     transform: translateY(-50%);
