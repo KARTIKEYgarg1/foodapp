@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Details from "./Details";
 import Spinner from "./spinner.gif";
+import logo from "./logo.png";
 const Home = () => {
-  const [searchItem, setSearchItem] = useState("salad");
+  const [searchItem, setSearchItem] = useState("");
   const [navHeight, setNavHeight] = useState("40vh");
   const app_key = "8cd5ad2835a1758d2a8ace911279e8e0";
   const app_id = "c669f09c";
@@ -64,20 +65,27 @@ const Home = () => {
                   setSearchItem(document.getElementById("inp").value);
                 }}
               >
-                Search
+                Search <i class="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
+          </div>
+          <div className="container w-100">
+            {navHeight == "100vh" && (
+              <img className="rounded mx-auto d-block" src={logo}></img>
+            )}
           </div>
         </div>
         <div id="spinner">
           spinner<img src={Spinner} className="w-25 h-25"></img>
         </div>
         <div id="fetchedData">
-          <div className="container-fluid mt-3 mb-5 d-flex align-items-center justify-content-center">
-            <hr className="w-25"></hr>
-            <span className="me-5 ms-5 fs-2">Top picks</span>
-            <hr className="w-25"></hr>
-          </div>
+          {navHeight != "100vh" && (
+            <div className="container-fluid mt-3 mb-5 d-flex align-items-center justify-content-center">
+              <hr className="w-25"></hr>
+              <span className="me-5 ms-5 fs-2">Top picks</span>
+              <hr className="w-25"></hr>
+            </div>
+          )}
           <div className="container-fluid">
             <main class="page-content">
               {recepie.map(function (element, index) {
@@ -92,11 +100,11 @@ const Home = () => {
                     <div class="content">
                       <h2 class="title">{element.recipe.label}</h2>
                       <p class="copy">
-                        <div className="d-flex">
+                        <div>
                           <span className="text-main">Cuisine type:</span>
                           {element.recipe.cuisineType[0]}
                         </div>
-                        <div className="d-flex">
+                        <div>
                           <span className="text-main">Meal type:</span>
                           {element.recipe.mealType[0]}
                         </div>
@@ -117,10 +125,10 @@ const Home = () => {
                         </div>
                       </p>
                       <button
-                        class="btn"
-                        to="/wow"
+                        class="btn-main"
                         onClick={() => {
                           setSd(element.recipe);
+                          arr = sd;
                           console.log(arr);
                           document.getElementById("detailsTab").style.display =
                             "block";
@@ -140,15 +148,18 @@ const Home = () => {
       </div>
       <div id="detailsTab">
         <div>
-          <button
-            className="btn"
-            onClick={() => {
-              document.getElementById("detailsTab").style.display = "none";
-              document.getElementById("mainTab").style.display = "block";
-            }}
-          >
-            Back to home screen
-          </button>
+          {navHeight != "100vh" && (
+            <button
+              className="btn m-2 p-2"
+              id="backBtn"
+              onClick={() => {
+                document.getElementById("detailsTab").style.display = "none";
+                document.getElementById("mainTab").style.display = "block";
+              }}
+            >
+              <i class="fa-solid fa-arrow-left-long"></i>
+            </button>
+          )}
         </div>
         <Details arr={sd} />
       </div>

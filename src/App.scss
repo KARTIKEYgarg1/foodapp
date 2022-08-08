@@ -11,6 +11,13 @@ $bp-xxlg: 1200px;
   text-decoration: none;
   color: $main;
 }
+.d-flex .text-main {
+  font-weight: 800;
+  margin-right: 10px;
+  letter-spacing: 1px;
+    word-spacing: 2px;
+
+}
 .nav {
   background-color: $main;
 }
@@ -147,7 +154,7 @@ $bp-xxlg: 1200px;
   line-height: 1.35;
 }
 
-.btn {
+.btn-main {
   cursor: pointer;
   margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
@@ -168,12 +175,32 @@ $bp-xxlg: 1200px;
     outline-offset: 3px;
   }
 }
-
+#d-flex{
+  display: flex;
+  @media (max-width: $bp-md) {
+    flex-direction: column;
+  }
+}
+#d-flex>div{
+  width: 50%;
+  @media (max-width: $bp-md) {
+  width: 100%;
+  }
+}
+.btn{
+  border: none;
+  color: $main;
+}
+#backBtn{
+  padding: 3px;
+  border-radius: 50%;
+  background: $main;
+  color: whitesmoke;
+}
 @media (hover: hover) and (min-width: $bp-md) {
   .card:after {
     transform: translateY(0);
   }
-  
   .content {
     transform: translateY(calc(100% - 4.5rem));
     
